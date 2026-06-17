@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500&display=swap');
+
+*{
+  padding: 0px;
+  margin: 0px;
+  box-sizing: border-box;
+}
+
+:root {
+  /* fundos */
+  --cor-fundo:           #0D0D0F;
+  --cor-superficie:      #141417;
+  --cor-superficie-alta: #1C1C21;
+  --cor-borda:           #4a4a4d;
+
+  /* texto */
+  --cor-texto-primario:  #F2F2F4;
+  --cor-texto-secundario:#A0A0B0;
+  --cor-texto-suave:     #5A5A6E;
+
+  /* destaque */
+  --cor-vermelho:        #E2394A;
+  --cor-vermelho-claro:  #FF6B6B;
+  --cor-ambar:           #EF9F27;
+  --cor-teal:            #1D9E75;
+
+  --fonte-titulo: 'Bebas Neue', sans-serif;
+  --fonte-corpo:  'Inter', sans-serif;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--cor-fundo);
+}
+
+
