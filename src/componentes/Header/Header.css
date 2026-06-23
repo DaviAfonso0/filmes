@@ -39,10 +39,32 @@
     font-size: 2.6rem;
 }
 
-.lista-links li{
+.links{
+    position: relative;
     margin-right: 30px;
     font-size: 1.3rem;
-    border-bottom: 1px solid var(--cor-vermelho);
+    color: white;
+    text-decoration: none;
+}
+
+.link-titulo{
+    color: white;
+    text-decoration: none;
+}
+
+.links::after{
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -4px;
+    width: 0;
+    height: 2px;
+    background-color: var(--cor-vermelho);
+    transition: width .3s ease;
+}
+
+.links:hover::after{
+    width: 100%;
 }
 
 
@@ -61,6 +83,12 @@
     width: min(650px, 90%);
     border: 1px solid var(--cor-borda);
     position: relative;
+    transition: .3s;
+}
+
+.form:focus-within{
+    border-color: var(--cor-vermelho);
+    box-shadow: 0 0 15px rgba(255, 59, 92, .20s);
 }
 
 .icone-input{
@@ -88,6 +116,8 @@
 .form input:focus{
     background-color: white;
     color: black;
+    outline: none;
+
 }
 
 .form button{
@@ -99,5 +129,10 @@
     border-left: 1px solid var(--cor-borda);
     padding-left: 10px;
     height: 100%;
+}
+
+.erro-filme{
+    text-align: center;
+    margin-top: 20px;
 }
 

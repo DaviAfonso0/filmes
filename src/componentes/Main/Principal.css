@@ -1,4 +1,4 @@
-.main{
+.main-resultado{
     padding: 20px;
     max-width: 1200px;
     margin: 0 auto;
@@ -7,9 +7,9 @@
     width: fit-content;
     margin: 0 auto;
 }
-.main h2{
-    color: white;
-   margin-bottom: 10px;
+.titulo-resultado{
+   color: white;
+   margin-bottom: 14px;
 }
 
 .lista-filmes{
@@ -26,6 +26,12 @@
 
 .filmes{
     margin-bottom: 50px;
+    transition: .3s;
+}
+
+.filmes:hover{
+    transform: translateY(-8px);
+    cursor: pointer;
 }
 
 .filmes img{
@@ -43,15 +49,29 @@
     max-width: 250px;
 }
 
+.favoritar{
+    position: absolute;
+    left: 10px;
+    top: 2%;
+    color: rgb(248, 248, 32);
+    filter: drop-shadow(0px 0px 10px rgba(188, 240, 44, 0.3));
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.favoritar:hover {
+    transform: scale(1.15);
+}
 .nota{
     position: absolute;
-    right: 5px;
+    right: 4px;
     text-align: center;
-    top: 3%;
+    top: 1%;
     background-color: var(--cor-vermelho);
     padding: 4px 7px 4px 7px;
     border-radius: 10px;
     color: white;
+    box-shadow: 0 0 10px rgba(255,59,92,.3);
 }
 
 .filmes h4{
@@ -73,4 +93,13 @@
     text-align: center;
     margin-top: 10px;
     color: #A2A199;
+}
+
+.filme-encontrado{
+    text-align: center;
+}
+
+.erro{
+    text-align: center;
+    color: white;
 }
