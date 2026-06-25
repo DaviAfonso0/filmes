@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react"
 import { Star } from "@mui/icons-material";
+import ClearIcon from '@mui/icons-material/Clear';
 
 function BuscarFilme({nomeFilme}){
     const [erro,setErro] = useState("")
     const [filme,setFilme] = useState([])
+    const [filmeSelecionado,setFilmeSelecionado] = useState(null)
     useEffect(() =>{
         async function loadData(){
             try{
@@ -30,6 +32,8 @@ function BuscarFilme({nomeFilme}){
                 setFilme(filmes.results.map((f) => ({
                     id: f.id,
                     poster: f.poster_path,
+                    backdrop: f.backdrop_path,
+                    sinopse: f.overview,
                     titulo: f.title,
                     ano: f.release_date.split("-")[0],
                     genero: f.genre_ids.map((id) =>  genreMap[id]),
@@ -48,6 +52,14 @@ function BuscarFilme({nomeFilme}){
         loadData()
     },[nomeFilme])
 
+    useEffect(()=>{
+        if(filmeSelecionado !== null){
+          document.body.style.overflow = "hidden";
+        } else{
+          document.body.style.overflow = "auto";
+        }
+      },[filmeSelecionado])
+
     return(
         <section className="main-resultado">
             { erro &&(
@@ -61,7 +73,7 @@ function BuscarFilme({nomeFilme}){
                         <ul className="lista-filmes">
                             {
                                 filme.map((filmeDaVez) =>(
-                                    <li key={filmeDaVez.id} className="filmes">
+                                    <li key={filmeDaVez.id} className="filmes" onClick={() => (setFilmeSelecionado(filmeDaVez))}>
                                         <div className="div-img-nota">
                                             <Star className="favoritar" sx={{ fontSize: 32 }}></Star>
                                             <p className="nota">{filmeDaVez.nota.toFixed(1)}</p>
@@ -79,6 +91,34 @@ function BuscarFilme({nomeFilme}){
                     </div>
                 )
             }
+            {
+            filmeSelecionado &&(
+              <div className="overlay" onClick={() => setFilmeSelecionado(null)}>
+                <div className="card-expandido" 
+                  onClick={(evento) => evento.stopPropagation()}
+                >
+                  <div className="div-img">
+                    <ClearIcon className="fechar" sx={{fontSize: "3rem",padding: "5px",transition: ".5s"}} onClick={()=> setFilmeSelecionado(null)}></ClearIcon>
+                    <img src={`https://image.tmdb.org/t/p/w780${filmeSelecionado.backdrop}`} alt={filmeSelecionado.titulo}/>
+                  </div>
+                  <div className="descricao">
+                    <h1>{filmeSelecionado.titulo}</h1>
+                    <div className="favoritar-overlay">
+                      <Star sx={{color: "yellow"}}></Star>
+                      <p>Favoritar</p>
+                    </div>
+                    <div className="genero-ano">
+                      <p>{filmeSelecionado.ano}</p>•
+                      <p>{filmeSelecionado.genero.join(" | ")}</p>
+                    </div>
+                    <div className="sinopse">
+                      <p>{filmeSelecionado.sinopse}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )
+          }
         </section>
     )
 }

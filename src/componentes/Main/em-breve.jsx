@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react"
 import { Star } from "@mui/icons-material";
+import ClearIcon from '@mui/icons-material/Clear';
 
 function EmBreve(){
     const [erro,setErro] = useState("")
     const [filmes,setFilmes] = useState([])
+    const [filmeSelecionado,setFilmeSelecionado] = useState(null)
     useEffect(()=>{
         async function loadData(){
             try{
@@ -23,8 +25,11 @@ function EmBreve(){
                 console.log(genero)
                 setFilmes(filme.results.map((f) =>(
                     {
+                      id: f.id,
                       titulo: f.title,
                       poster: f.poster_path,
+                      backdrop: f.backdrop_path,
+                      sinopse: f.overview,
                       data: new Date(f.release_date).toLocaleDateString('pt-BR'),
                       genero: f.genre_ids.map((id) => generoMap[id])
                     
@@ -38,6 +43,13 @@ function EmBreve(){
         }
         loadData()
     },[])
+    useEffect(()=>{
+        if(filmeSelecionado !== null){
+          document.body.style.overflow = "hidden";
+        } else{
+          document.body.style.overflow = "auto";
+        }
+      },[filmeSelecionado])
     return(
        <section className="main-resultado">
             <div className="conteudo">
@@ -52,7 +64,7 @@ function EmBreve(){
                         <ul  className="lista-filmes">
                             {
                                 filmes.map((f) => (
-                                     <li className="filmes" key={f.titulo}>
+                                     <li className="filmes" key={f.titulo} onClick={() => setFilmeSelecionado(f)}>
                                         <div className="div-img-nota">
                                             <Star className="favoritar" sx={{ fontSize: 32 }}></Star>
                                             <img src={`https://image.tmdb.org/t/p/w500${f.poster}`}
@@ -65,15 +77,39 @@ function EmBreve(){
                                         </div>
                                     </li>
                                 ))
-                            }
-                        
-                           
-                        
+                            }   
                     
                         </ul>
                     )
                 }
-                
+                {
+            filmeSelecionado &&(
+              <div className="overlay" onClick={() => setFilmeSelecionado(null)}>
+                <div className="card-expandido" 
+                  onClick={(evento) => evento.stopPropagation()}
+                >
+                  <div className="div-img">
+                    <ClearIcon className="fechar" sx={{fontSize: "3rem",padding: "5px",transition: ".5s"}} onClick={()=> setFilmeSelecionado(null)}></ClearIcon>
+                    <img src={`https://image.tmdb.org/t/p/w780${filmeSelecionado.backdrop}`} alt={filmeSelecionado.titulo}/>
+                  </div>
+                  <div className="descricao">
+                    <h1>{filmeSelecionado.titulo}</h1>
+                    <div className="favoritar-overlay">
+                      <Star sx={{color: "yellow"}}></Star>
+                      <p>Favoritar</p>
+                    </div>
+                    <div className="genero-ano">
+                      <p>{filmeSelecionado.ano}</p>•
+                      <p>{filmeSelecionado.genero.join(" | ")}</p>
+                    </div>
+                    <div className="sinopse">
+                      <p>{filmeSelecionado.sinopse}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )
+          }
             </div>
        </section>
     )
