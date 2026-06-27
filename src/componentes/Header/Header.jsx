@@ -1,5 +1,6 @@
 import TheatersIcon from '@mui/icons-material/Theaters';
 import SearchIcon from '@mui/icons-material/Search';
+import MenuIcon from '@mui/icons-material/Menu';
 import "./Header.css"
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -8,6 +9,7 @@ import { Link } from 'react-router-dom';
 function Header({setNomeFilmes}){
     const[nomeFilme,setNomeFilme] = useState("")
     const[erro,setErro] = useState("")
+    const [menuAberto,setMenuAberto] = useState(false)
     const navigate = useNavigate()
     function enviarFilme(e){
         e.preventDefault();
@@ -30,14 +32,30 @@ function Header({setNomeFilmes}){
                         <div className='icone-titulo'>
                             <TheatersIcon></TheatersIcon>
                         </div>
-                        <h1>CineNow</h1>
+                            <h1>CineNow</h1>
                     </div>
                 </Link>
-                <ul className='lista-links'>
-                    <li><Link to={"/"} className='links'>Em cartaz</Link></li>
-                    <li><Link to={"/em-breve"} className='links'>Em Breve</Link></li>
-                    <li><Link to={"/favoritos"} className='links'>Favoritos</Link></li>
-                </ul>
+                <button 
+                    className='hamburguer'
+                    onClick={() => setMenuAberto(!menuAberto)}
+                >
+                    <MenuIcon sx={{fontSize: "32px"}}></MenuIcon>
+                </button>
+                {
+                    menuAberto &&(
+                            <div
+                                className='overlay'
+                                onClick={() => setMenuAberto(false)}
+                            ></div>
+                    )
+                }
+                <nav className={`menu ${menuAberto ? "ativo" : ""}`}>
+                    <ul className='lista-links'>
+                        <li><Link to={"/"} className='links'>Em cartaz</Link></li>
+                        <li><Link to={"/em-breve"} className='links'>Em Breve</Link></li>
+                        <li><Link to={"/favoritos"} className='links'>Favoritos</Link></li>
+                    </ul>
+                </nav>
             </section>
             <section className='section-form'>
                 <form className='form' onSubmit={enviarFilme}>
