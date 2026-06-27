@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState,useEffect } from "react"
 import * as servico from "../../servico/favorito_servico"
 import ClearIcon from '@mui/icons-material/Clear';
 import { Star } from "@mui/icons-material";
@@ -13,6 +13,13 @@ function Favoritos(){
         servico.adicionarFilmesFavoritos(id, filme)
         setFilmesFavoritos(servico.pegarFilmes())
     }
+    useEffect(()=>{
+        if(filmeSelecionado !== null){
+          document.body.style.overflow = "hidden";
+        } else{
+          document.body.style.overflow = "auto";
+        }
+      },[filmeSelecionado])
     return(
          <section className="main-resultado">
             {
