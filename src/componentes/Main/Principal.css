@@ -6,6 +6,7 @@
 .conteudo{
     width: fit-content;
     margin: 0 auto;
+
 }
 .titulo-resultado{
    color: white;
@@ -15,9 +16,9 @@
 .lista-filmes{
     display:flex;
     flex-flow: row wrap;
-    justify-content: flex-start;
     column-gap: 30px;
     list-style-type: none;
+    justify-content: flex-start;
     
     padding: 0;
     margin: 0;
@@ -137,11 +138,13 @@
 
 .card-expandido {
   width: 650px;
-  height: 90%;
+  max-height: 90vh;
   background: #111;
   color: white;
   border-radius: 12px;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 
 }
 
@@ -166,10 +169,10 @@
 .descricao{
     padding: 20px 20px 30px 20px;
     display: flex;
-    height: 35%;
     flex-direction: column;
     row-gap: 10px;
     overflow-y: auto;
+    flex: 1;
 }
 
 .favoritar-overlay{
@@ -189,5 +192,23 @@
   width: 100%;
   height: auto;
   display: block;
+}
+
+@media (max-width: 1144px){
+    .titulo-resultado{
+        text-align: center;
+    }
+    .lista-filmes{
+        justify-content: center;
+    }
+
+}
+
+@media (max-width: 600px){
+    .card-expandido{
+        width: 90vw;                    
+        max-height: calc(100vh - 40px); 
+    }
+    
 }
 
