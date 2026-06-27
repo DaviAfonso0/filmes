@@ -1,11 +1,21 @@
 import { useEffect, useState } from "react"
 import { Star } from "@mui/icons-material";
 import ClearIcon from '@mui/icons-material/Clear';
+import * as servico from "../../servico/favorito_servico";
+import StarBorderIcon from '@mui/icons-material/StarBorder';
 
 function BuscarFilme({nomeFilme}){
     const [erro,setErro] = useState("")
     const [filme,setFilme] = useState([])
     const [filmeSelecionado,setFilmeSelecionado] = useState(null)
+    const handleFavoritar = (id,filmeSelecionado) =>{
+        servico.adicionarFilmesFavoritos(id,filmeSelecionado);
+        
+        const filmesAtualizados = filme.map((f)=> (
+            f.id === id ? {...filmeSelecionado,favorito: !f.favorito} : f
+        ))
+        setFilme(filmesAtualizados)
+    }
     useEffect(() =>{
         async function loadData(){
             try{
@@ -36,8 +46,9 @@ function BuscarFilme({nomeFilme}){
                     sinopse: f.overview,
                     titulo: f.title,
                     ano: f.release_date.split("-")[0],
-                    genero: f.genre_ids.map((id) =>  genreMap[id]),
-                    nota: f.vote_average
+                    generos: f.genre_ids.map((id) =>  genreMap[id]),
+                    nota: f.vote_average,
+                    favorito: servico.ehFavorito(f.id)
                     
                 })))
                 setErro("")
@@ -74,14 +85,24 @@ function BuscarFilme({nomeFilme}){
                             {
                                 filme.map((filmeDaVez) =>(
                                     <li key={filmeDaVez.id} className="filmes" onClick={() => (setFilmeSelecionado(filmeDaVez))}>
-                                        <div className="div-img-nota">
-                                            <Star className="favoritar" sx={{ fontSize: 32 }}></Star>
+                                        <div className="div-img-nota" >
+                                            <div className="favoritar" style={{fontSize: "32px"}} onClick={(e) => {
+                                                e.stopPropagation();
+                                                handleFavoritar(filmeDaVez.id,filmeDaVez)
+                                            }}>
+                                                {
+                                                    filmeDaVez.favorito ?
+                                                    <Star></Star>
+                                                    :
+                                                    <StarBorderIcon></StarBorderIcon>
+                                                }
+                                            </div>
                                             <p className="nota">{filmeDaVez.nota.toFixed(1)}</p>
                                             <img src={`https://image.tmdb.org/t/p/w500${filmeDaVez.poster}`} alt={filmeDaVez.titulo} />
                                         </div>
                                         <div>
                                             <h4>{filmeDaVez.titulo}</h4>
-                                            <p className="genero">{filmeDaVez.genero.join(" | ")}</p>
+                                            <p className="genero">{filmeDaVez.generos.join(" | ")}</p>
                                             <p className="ano">{filmeDaVez.ano}</p>
                                         </div>
                                     </li>
@@ -109,7 +130,7 @@ function BuscarFilme({nomeFilme}){
                     </div>
                     <div className="genero-ano">
                       <p>{filmeSelecionado.ano}</p>•
-                      <p>{filmeSelecionado.genero.join(" | ")}</p>
+                      <p>{filmeSelecionado.generos.join(" | ")}</p>
                     </div>
                     <div className="sinopse">
                       <p>{filmeSelecionado.sinopse}</p>

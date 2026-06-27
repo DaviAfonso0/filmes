@@ -1,12 +1,22 @@
 import { Star } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import ClearIcon from '@mui/icons-material/Clear';
+import StarBorderIcon from '@mui/icons-material/StarBorder';
+import * as servico from "../../servico/favorito_servico"
 
 function EmCartaz() {
   const [filme, setFilme] = useState([]);
   const [erro, setErro] = useState("");
   const [filmeSelecionado,setFilmeSelecionado] = useState(null)
 
+  const handleFavoritar = (id, filmeSelecionado) => {
+    servico.adicionarFilmesFavoritos(id, filmeSelecionado)
+    
+    const filmesAtualizados = filme.map(f => 
+        f.id === id ? {...f, favorito: !f.favorito} : f
+    )
+    setFilme(filmesAtualizados)
+  }
   useEffect(() => {
     async function loadData() {
       try {
@@ -35,7 +45,8 @@ function EmCartaz() {
             ano: filmedavez.release_date.split("-")[0],
             nota: filmedavez.vote_average,
             generos: filmedavez.genre_ids.map((id) => genreMap[id]),
-            sinopse: filmedavez.overview
+            sinopse: filmedavez.overview,
+            favorito: servico.ehFavorito(filmedavez.id)
         })),
         );
     } catch (erro) {
@@ -66,7 +77,17 @@ function EmCartaz() {
               >
              
                 <div className="div-img-nota">
-                    <Star className="favoritar" sx={{ fontSize: 32 }}></Star>
+                      <div className="favoritar" onClick={(e) => {
+                          e.stopPropagation()
+                          handleFavoritar(filmeDaVez.id,filmeDaVez)
+                        }}>
+                        {
+                          filmeDaVez.favorito ?
+                          <Star></Star>
+                          :
+                          <StarBorderIcon></StarBorderIcon>
+                        }
+                      </div>
                     <p className="nota">{filmeDaVez.nota.toFixed(1)}</p>
                   <img
                     src={`https://image.tmdb.org/t/p/w500${filmeDaVez.poster}`}
@@ -94,7 +115,18 @@ function EmCartaz() {
                   <div className="descricao">
                     <h1>{filmeSelecionado.titulo}</h1>
                     <div className="favoritar-overlay">
-                      <Star sx={{color: "yellow"}}></Star>
+                      <div className="favoritar-overlay-icone" onClick={(e) => {
+                          e.stopPropagation()
+                          handleFavoritar(filmeSelecionado.id,filmeSelecionado)
+                          setFilmeSelecionado({...filmeSelecionado,favorito: !filmeSelecionado.favorito})
+                        }}>
+                        {
+                          filmeSelecionado.favorito ?
+                          <Star></Star>
+                          :
+                          <StarBorderIcon></StarBorderIcon>
+                        }
+                      </div>
                       <p>Favoritar</p>
                     </div>
                     <div className="genero-ano">

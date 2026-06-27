@@ -1,11 +1,22 @@
 import { useEffect, useState } from "react"
 import { Star } from "@mui/icons-material";
 import ClearIcon from '@mui/icons-material/Clear';
+import * as servico from "../../servico/favorito_servico";
+import StarBorderIcon from '@mui/icons-material/StarBorder';
 
 function EmBreve(){
     const [erro,setErro] = useState("")
     const [filmes,setFilmes] = useState([])
     const [filmeSelecionado,setFilmeSelecionado] = useState(null)
+
+    const handleFavoritar = (id,filmeSelecionado) =>{
+      servico.adicionarFilmesFavoritos(id,filmeSelecionado)
+
+      const filmesAtualizados = filmes.map((f) => (
+        f.id === id ? {...f,favorito: !f.favorito} : f
+      ))
+      setFilmes(filmesAtualizados)
+    }
     useEffect(()=>{
         async function loadData(){
             try{
@@ -30,8 +41,10 @@ function EmBreve(){
                       poster: f.poster_path,
                       backdrop: f.backdrop_path,
                       sinopse: f.overview,
-                      data: new Date(f.release_date).toLocaleDateString('pt-BR'),
-                      genero: f.genre_ids.map((id) => generoMap[id])
+                      nota: 0,
+                      ano: new Date(f.release_date).toLocaleDateString('pt-BR'),
+                      generos: f.genre_ids.map((id) => generoMap[id]),
+                      favorito: servico.ehFavorito(f.id)
                     
                     }
                 )))
@@ -66,14 +79,24 @@ function EmBreve(){
                                 filmes.map((f) => (
                                      <li className="filmes" key={f.titulo} onClick={() => setFilmeSelecionado(f)}>
                                         <div className="div-img-nota">
-                                            <Star className="favoritar" sx={{ fontSize: 32 }}></Star>
+                                            <div className="favoritar" style={{fontSize: "32px"}} onClick={(e)=>{
+                                              e.stopPropagation()
+                                              handleFavoritar(f.id,f)
+                                            }}>
+                                             {
+                                              f.favorito ?
+                                              <Star></Star>
+                                              :
+                                              <StarBorderIcon></StarBorderIcon>
+                                             }
+                                            </div>
                                             <img src={`https://image.tmdb.org/t/p/w500${f.poster}`}
                                             alt={f.titulo}/>
                                         </div>
                                         <div>
                                             <h4>{f.titulo}</h4>
-                                            <p className="genero">{f.genero.join(" | ")}</p>
-                                            <p className="ano">{f.data}</p>
+                                            <p className="genero">{f.generos.join(" | ")}</p>
+                                            <p className="ano">{f.ano}</p>
                                         </div>
                                     </li>
                                 ))
@@ -95,12 +118,24 @@ function EmBreve(){
                   <div className="descricao">
                     <h1>{filmeSelecionado.titulo}</h1>
                     <div className="favoritar-overlay">
-                      <Star sx={{color: "yellow"}}></Star>
+                      <div className="favoritar-overlay-icone" onClick={(e) => {
+                        e.stopPropagation()
+                        handleFavoritar(filmeSelecionado.id,filmeSelecionado)
+                        setFilmeSelecionado({...filmeSelecionado,favorito: !filmeSelecionado.favorito})
+                      }}>
+                        {
+                          filmeSelecionado.favorito?
+                          <Star></Star>
+                          :
+                          <StarBorderIcon></StarBorderIcon>
+                        }
+
+                      </div>
                       <p>Favoritar</p>
                     </div>
                     <div className="genero-ano">
                       <p>{filmeSelecionado.ano}</p>•
-                      <p>{filmeSelecionado.genero.join(" | ")}</p>
+                      <p>{filmeSelecionado.generos.join(" | ")}</p>
                     </div>
                     <div className="sinopse">
                       <p>{filmeSelecionado.sinopse}</p>

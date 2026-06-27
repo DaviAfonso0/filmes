@@ -53,12 +53,19 @@
     position: absolute;
     left: 10px;
     top: 2%;
-    color: rgb(248, 248, 32);
-    filter: drop-shadow(0px 0px 10px rgba(188, 240, 44, 0.3));
+    color: var(--cor-vermelho); 
     cursor: pointer;
     transition: transform 0.2s ease;
+    border: 2px solid var(--cor-vermelho);
+    background-color: rgba(0, 0, 0, 0.6);  
+    border-radius: 50%;  
+    padding: 6px;  
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;  
+    height: 44px;
 }
-
 .favoritar:hover {
     transform: scale(1.15);
 }
@@ -123,6 +130,11 @@
   z-index: 999;
 }
 
+.favoritar-overlay-icone{
+    color: yellow;
+    cursor: pointer;
+}
+
 .card-expandido {
   width: 650px;
   height: 90%;
@@ -167,6 +179,7 @@
 
 }
 
+
 .genero-ano{
     display: flex;
     column-gap: 10px;
@@ -177,3 +190,4 @@
   height: auto;
   display: block;
 }
+
