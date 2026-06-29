@@ -125,8 +125,22 @@ function BuscarFilme({nomeFilme}){
                   <div className="descricao">
                     <h1>{filmeSelecionado.titulo}</h1>
                     <div className="favoritar-overlay">
-                      <Star sx={{color: "yellow"}}></Star>
-                      <p>Favoritar</p>
+                      <div className="favoritar-overlay-icone" onClick={(e)=>
+                        {   
+                            e.stopPropagation()
+                            handleFavoritar(filmeSelecionado.id,filmeSelecionado)
+                            setFilmeSelecionado({...filmeSelecionado,favorito: !filmeSelecionado.favorito})
+                        }
+                      }>
+                        {
+                            filmeSelecionado.favorito ? 
+                            <Star></Star>
+                            :
+                            <StarBorderIcon></StarBorderIcon>
+                        }
+                      
+                      </div>
+                    <p>Favoritar</p>
                     </div>
                     <div className="genero-ano">
                       <p>{filmeSelecionado.ano}</p>•

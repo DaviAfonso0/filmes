@@ -1,5 +1,5 @@
-import { useState,useEffect } from "react"
-import * as servico from "../../servico/favorito_servico"
+import { useState,useEffect, } from "react";
+import * as servico from "../../servico/favorito_servico";
 import ClearIcon from '@mui/icons-material/Clear';
 import { Star } from "@mui/icons-material";
 import StarBorderIcon from '@mui/icons-material/StarBorder';
@@ -7,12 +7,17 @@ import StarBorderIcon from '@mui/icons-material/StarBorder';
 function Favoritos(){
     const [filmesFavoritos,setFilmesFavoritos] = useState(servico.pegarFilmes())
     const [filmeSelecionado,setFilmeSelecionado] = useState(null)
-       
     const handleFavorito = (id, filme) => {
         
         servico.adicionarFilmesFavoritos(id, filme)
+        const filmesAtualizados = servico.pegarFilmes()
         setFilmesFavoritos(servico.pegarFilmes())
+
+         if (location.pathname === '/favoritos' && !filmesAtualizados.some(f => f.id === id)) {
+          setFilmeSelecionado(null)
+        }
     }
+
     useEffect(()=>{
         if(filmeSelecionado !== null){
           document.body.style.overflow = "hidden";
@@ -70,6 +75,7 @@ function Favoritos(){
                                 <div className="favoritar-overlay">
                                   <div className="favoritar-overlay-icone" onClick={(e) => {
                                         e.stopPropagation()
+                                        handleFavorito(filmeSelecionado.id,filmeSelecionado)
                                     }
                                     }>
                                     {
