@@ -91,7 +91,7 @@
 
 .form:focus-within{
     border-color: var(--cor-vermelho);
-    box-shadow: 0 0 15px rgba(255, 59, 92, .20s);
+    box-shadow: 0 0 15px rgba(255, 59, 92, .20);
 }
 
 .icone-input{
@@ -108,11 +108,14 @@
     max-width: 600px;
     padding: 14px 12px 12px 30px;
     border-radius: 10px;
-    
+
+    font-size: 16px;
+
     color: white;
 }
 
 .form input::placeholder{
+    font-size: 16px;
     font-weight: bolder;
 }
 

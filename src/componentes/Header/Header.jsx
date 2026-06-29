@@ -1,5 +1,4 @@
 import TheatersIcon from '@mui/icons-material/Theaters';
-import { useEffect } from 'react';
 import SearchIcon from '@mui/icons-material/Search';
 import MenuIcon from '@mui/icons-material/Menu';
 import "./Header.css"
@@ -28,32 +27,6 @@ function Header({setNomeFilmes}){
         inputRef.current.blur();
         
     }
-    useEffect(() => {
-        const handleFocus = () => {
-            document.documentElement.style.height = '100vh';
-            document.documentElement.style.overflow = 'hidden';
-            document.body.style.height = '100vh';
-            document.body.style.overflow = 'hidden';
-        };
-
-        const handleBlur = () => {
-            document.documentElement.style.height = 'auto';
-            document.documentElement.style.overflow = 'auto';
-            document.body.style.height = 'auto';
-            document.body.style.overflow = 'auto';
-        };
-
-        const input = document.querySelector('input[type="search"]');
-        if (input) {
-            input.addEventListener('focus', handleFocus);
-            input.addEventListener('blur', handleBlur);
-            
-            return () => {
-            input.removeEventListener('focus', handleFocus);
-            input.removeEventListener('blur', handleBlur);
-            };
-    }
-    }, []);
     return(
         <header className='header'>
             <section className='section-titulos'>
