@@ -5,9 +5,11 @@ import "./Header.css"
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import { useRef } from 'react';
 
 function Header({setNomeFilmes}){
     const[nomeFilme,setNomeFilme] = useState("")
+    const inputRef = useRef(null);
     const[erro,setErro] = useState("")
     const [menuAberto,setMenuAberto] = useState(false)
     const navigate = useNavigate()
@@ -22,6 +24,7 @@ function Header({setNomeFilmes}){
             navigate("/buscar-filme")
             setErro("")
         }
+        inputRef.current.blur();
         
     }
     return(
@@ -61,6 +64,7 @@ function Header({setNomeFilmes}){
                 <form className='form' onSubmit={enviarFilme}>
                     <SearchIcon className='icone-input'></SearchIcon>
                     <input 
+                        ref={inputRef}
                         type="search"
                         value={nomeFilme}
                         placeholder='Buscar filmes...'
